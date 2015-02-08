@@ -6,13 +6,6 @@ search: true
 
 # Conventions
 
-### Response Bodies
-All response bodies are a single json object.
-
-One field is guarenteed in every response-object: `code`.
-
-`code` represents the state of the request (did it succeed or fail?).
-
 ### Methods
 The http methods used to represent our CRUD Rest api are:
 
@@ -27,6 +20,15 @@ The http methods used to represent our CRUD Rest api are:
 
 `GET` and `DELETE` use `query?parameters=tacked&on=to&the=url`
 
+### Response Bodies
+All response bodies are a single json object.
+
+One field is guarenteed in every response-object: `code`.
+
+`code` represents the state of the request (did it succeed or fail?).
+
+A code of `success` means the request succeeded. Anything else is an error.
+
 ### Errors
 
 #### Ya 'done fucked up
@@ -34,7 +36,7 @@ The generic error `server_error` may be returned for a number of situations in w
 
 To see exactly how *"ya 'done fucked up"*, take a look at the server logs: [log.api.halp.me](http://log.api.halp.me)
 
-*`server_error` may also be a problem with server-code :P, either way, this isn't a situation we should expect in a production environemnt*
+*`server_error` may also be a problem with server-code :P, either way, this isn't a situation we should expect in a production environment (though we should be prepared for it to happen anyway).*
 
 #### How could you have known?
 In some circumstances, errors may occur that require the client to do something. For instance, a user may try to register with an email that has already been taken. In this case, the user should be notified of the situation.
