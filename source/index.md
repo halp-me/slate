@@ -142,16 +142,31 @@ lastname      | string                | user's lastname
 ```shell
 # request
 {
+  "pinMode": "student"
   "latitude": 47.2232931,
   "longitude": -162.9434883,
-  "university": "Cal Poly",
-  "course": {
-    "subject": "PSY",
-    "number": 101
-  },
+  "duration": 3600,
+# pinMode=student only
   "description": "Paying someone to do my homework for me.",
+  "skills": ["archery", "snorkeling", "knitting"],
   "images": ["...", "...", "..."],
-  "skills": ["archery", "snorkeling", "knitting"]
+  "courses": {
+    "Cal Poly": [
+      {
+        "subject": "PSY",
+        "number": 101
+      },{
+        "subject": "PSY",
+        "number": 103
+      }
+    ],
+    "Cuesta": [
+      {
+        "subject": "PHYS",
+        "number": 142
+      }
+    ]
+  }
 }
 
 # response
@@ -160,32 +175,33 @@ lastname      | string                | user's lastname
 }
 ```
 
-<aside class="warning">This endpoint is undergoing major revisions</aside>
-
 `POST /pin`
 
 Drop a pin as the current user.
 
 ### Body Parameters
 
-Parameter     |   Type                | Description
---------------|-----------------------|--------
-latitude      | float                 | 
-longitude     | float                 | 
-university    | string                | 
-course        | object                | subject (string) and number (int)
-description   | string                | description of the problem
-images        | array of strings      | each string is a base64 encoded jpeg or png image
-skills        | array of strings      | the skills the user needs help with
+Parameter     |   Type                   | Description
+--------------|--------------------------|--------
+pinMode       | enum(student,tutor)      | which mode to drop the pin as?
+latitude      | float                    | 
+longitude     | float                    | 
+duration      | int                      | how long the pin should last (in seconds)
+description   | string                   | (student) description of the problem
+skills        | array of strings         | (student) skills the student needs help with
+images        | array of strings         | (student) base64 encoded jpeg or png images
+courses       | hash of uname: [course]  | (student) course: {subject, number}
 
 ### Failure Codes
 - `already_dropped` if the user already has a pin down
+- `max_duration_exceeded` if the duration is too long
+- `tutor_profile_missing` if trying to drop pin as tutor but no tutor profile
 
 ## Delete a pin
 
 ```shell
 # request
-/pin?mode=student
+/pin?pinMode=student
 
 # response
 {
@@ -195,15 +211,13 @@ skills        | array of strings      | the skills the user needs help with
 
 `DELETE /pin`
 
-<aside class="warning">This endpoint is undergoing major revisions</aside>
-
 Remove the current user's pin.
 
 ### Query Parameters
 
 Parameter     |   Type                | Description
 --------------|-----------------------|--------
-mode          | enum(student,tutor)   | which pin should be removed?
+pinMode       | enum(student,tutor)   | which pin should be removed?
 
 ### Failure Codes
 - `no_pin` the user doesn't have a pin to remove
@@ -212,29 +226,52 @@ mode          | enum(student,tutor)   | which pin should be removed?
 
 ```shell
 # request
-/pins
+/pins?pinMode=student
 
 # response
 {
   "code": "success",
   "pins": [
     {
-      "userId": 34848,
+      "user": {
+        "userId": 34848,
+        "firstname": "John",
+        "lastname": "Doe",
+        "rating": 4.72,
+        "ratings": 14,
+        "image": "http://....",
+      # pinMode=tutor only
+        "bio": "Senior at cal poly with honors in chem..",
+        "rate": 23.00
+      # end pinMode=tutor only
+      },
       "latitude": 192.9393,
       "longitude": -44.5821,
-      "course": {
-        "subject": "PSY",
-        "number": 101
+    # pinMode=student only
+      "description": "a description of the problem",
+      "images": ["url", "url"],
+    # end pinMode=student only
+      "courses": {
+        "Cal Poly": [
+          {
+            "subject": "PSY",
+            "number": 101
+          },{
+            "subject": "PSY",
+            "number": 103
+          }
+        ],
+        "Cuesta": [
+          {
+            "subject": "PHYS",
+            "number": 142
+          }
+        ]
       },
-      "university": "Cal Poly",
-      "skills": ["fishing"],
-      "firstname": "John",
-      "lastname": "Doe",
-      "rating": 5.0,
-      "profileImageUrl": "http://....",
-      "images": ["url", "url"]
-    },
-    {
+      "skills": ["fishing"]
+    },{
+      ...
+    },{
       ...
     }
   ]
@@ -243,6 +280,95 @@ mode          | enum(student,tutor)   | which pin should be removed?
 
 `GET /pins`
 
-<aside class="warning">This endpoint is undergoing major revisions</aside>
+Get a list of pins the user is interested in.
 
-Get a list of pins the user is interested in. For now, return all pins. Soon this will involve returning only pins that are close or that the user is interested in.
+### Query Parameters
+
+Parameter     |   Type                | Description
+--------------|-----------------------|--------------
+pinMode       | enum(student,tutor)   | which mode of pins to *return*?
+
+# Profile
+
+## Get Profile
+
+```shell
+#request
+/profile
+
+#response
+{
+  "code": "success",
+  "userId": 12,
+  "firstname": "Bob",
+  "lastname": "Smith",
+  "image": "url",
+  # tutor = null if no profile
+  "tutor": {
+    "bio": "I'm awesome."
+    "rate": 22.50,
+    "skills": ["archery", "wrangling"],
+    "courses": {
+      "San Jose State University": [
+        {
+          "subject": "PHIL",
+          "number": 182
+        }
+      ]
+    }
+  }
+}
+```
+
+`Get /profile`
+
+Get information about the currently logged in user.
+
+## Update Profile
+
+```shell
+#request
+{
+  "firstname": "Bob",
+  "lastname": "Smith",
+  "image": "base64..",
+  "tutor": {
+    "bio": "I'm awesome.",
+    "rate": 28.00,
+    "skills": ["archery", "wrangling"],
+    "courses": {
+      "San Jose State University": [
+        {
+          "subject": "PHIL",
+          "number": 182
+        }
+      ]
+    },
+    
+  }
+}
+
+#response
+{
+  "code": "success"
+}
+```
+
+`PUT /profile`
+
+Update the user's profile.
+
+Leave field out or set to null to not change it.
+
+### Body Parameters
+
+Parameter     |   Type                   | Description
+--------------|--------------------------|--------
+firstname     | string                   | 
+lastname      | string                   | 
+image         | string                   | base64 encoded png or jpeg image
+tutor         | object                   | null=don't change, object=create/update it
+tutor.bio         | string                   | short bio of tutor (degrees, bla bla bla)
+tutor.rate        | float                    | how much the tutor charges per hour
+tutor.skills      | array of strings         | skills the tutor wants to tutor in
+tutor.courses     | hash of uname: [course]  | courses the tutor wants to tutor for
