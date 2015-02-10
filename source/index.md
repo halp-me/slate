@@ -249,7 +249,13 @@ pinMode       | enum(student,tutor)   | which pin should be removed?
       "longitude": -44.5821,
     # pinMode=student only
       "description": "a description of the problem",
-      "images": ["url", "url"],
+      "images": [
+        {
+          "original": "url",
+        },{
+          "original": "url",
+        }
+      ],
     # end pinMode=student only
       "courses": {
         "Cal Poly": [
@@ -302,7 +308,9 @@ pinMode       | enum(student,tutor)   | which mode of pins to *return*?
   "userId": 12,
   "firstname": "Bob",
   "lastname": "Smith",
-  "image": "url",
+  "image": {
+    "original": "url"
+  },
   # tutor = null if no profile
   "tutor": {
     "bio": "I'm awesome."
