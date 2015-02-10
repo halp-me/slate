@@ -245,6 +245,7 @@ pinMode       | enum(student,tutor)   | which pin should be removed?
         "rate": 23.00
       # end pinMode=tutor only
       },
+      "endTime": 391273813, # seconds since epoch
       "latitude": 192.9393,
       "longitude": -44.5821,
     # pinMode=student only
