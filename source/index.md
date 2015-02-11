@@ -239,7 +239,7 @@ pinMode       | enum(student,tutor)   | which pin should be removed?
         "lastname": "Doe",
         "rating": 4.72,
         "ratings": 14,
-        "image": "http://....",
+        "image": {original: "http://...."}, # or null if no image
       # pinMode=tutor only
         "bio": "Senior at cal poly with honors in chem..",
         "rate": 23.00
