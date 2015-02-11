@@ -98,7 +98,7 @@ accessToken   | string                | (facebook) user's facebook access token
 
 ### Failure Codes
 - `invalid_credentials`
-- `invalid_facebook_access_token` TODO: currently this is `...auth_token`
+- `invalid_facebook_access_token`
 
 <!--------------------------------------------------------------------------!-->
 ## Register
