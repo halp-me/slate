@@ -47,7 +47,7 @@ Many of the sections below contain a "Failure Codes" section. These codes are th
 
 ## Authorized Endpoints
 
-All authorized endpoints (most endpoints) require a sessionId http header which
+All authorized endpoints (most endpoints) require a `sessionId` http header which
 communicates the user's identity to the server.
 
 If the sessionId is invalid or not provided, the server will reply with the
@@ -193,7 +193,7 @@ images        | array of strings         | (student) base64 encoded jpeg or png 
 courses       | hash of uname: [course]  | (student) course: {subject, number}
 
 ### Failure Codes
-- `already_dropped` if the user already has a pin down
+- `already_dropped` if the user already has a pin down in this mode
 - `max_duration_exceeded` if the duration is too long
 - `tutor_profile_missing` if trying to drop pin as tutor but no tutor profile
 
@@ -368,6 +368,9 @@ Get information about the currently logged in user.
 Update the user's profile.
 
 Leave field out or set to null to not change it.
+
+`profile.image` is the only field that **can be deleted**. Set
+`profile.image` to null to delete the user's image.
 
 ### Body Parameters
 
