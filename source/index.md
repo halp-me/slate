@@ -337,23 +337,11 @@ Get information about the currently logged in user.
 
 ```shell
 #request
+# (update the user's image and change the skills of the user's tutor profile)
 {
-  "firstname": "Bob",
-  "lastname": "Smith",
   "image": "base64..",
   "tutor": {
-    "bio": "I'm awesome.",
-    "rate": 28.00,
     "skills": ["archery", "wrangling"],
-    "courses": {
-      "San Jose State University": [
-        {
-          "subject": "PHIL",
-          "number": 182
-        }
-      ]
-    },
-    
   }
 }
 
@@ -371,6 +359,11 @@ Leave field out or set to null to not change it.
 
 `profile.image` is the only field that **can be deleted**. Set
 `profile.image` to null to delete the user's image.
+
+The tutor portion of the user's profile starts out as null (no profile).
+To **create** a tutor profile, simply supply the tutor object with
+*all fields*. Creation of the tutor object is the only time where
+all fields of the tutor object must be present.
 
 ### Body Parameters
 
