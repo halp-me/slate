@@ -79,7 +79,10 @@ In the sections below, unauthorized endpoints are marked by the term
 # response
 {
   "code": "success",
-  "sessionId": "49c942f682d3f9329d8f2f1b5696366e"
+  "sessionId": "49c942f682d3f9329d8f2f1b5696366e",
+  "profile": {
+    # same object as GET /profile
+  }
 }
 ```
 
@@ -115,7 +118,10 @@ accessToken   | string                | (facebook) user's facebook access token
 # response
 {
   "code": "success",
-  "sessionId": "49c942f682d3f9329d8f2f1b5696366e"
+  "sessionId": "49c942f682d3f9329d8f2f1b5696366e",
+  "profile": {
+    # same object as GET /profile
+  }
 }
 ```
 
