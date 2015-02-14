@@ -232,6 +232,21 @@ pinMode       | enum(student,tutor)   | which pin should be removed?
 
 ```shell
 # request
+/pins?pinMode=mine
+
+# response
+{
+  "code": "success",
+  "student": {
+    # a pin with all the same fields as below
+    # or null if the user doesn't have a student pin dropped
+  },
+  "tutor": {
+    # a pin with all the same fields as below
+    # or null if the user doesn't have a tutor pin dropped
+  }
+
+# request
 /pins?pinMode=student
 
 # response
@@ -299,7 +314,8 @@ Get a list of pins the user is interested in.
 
 Parameter     |   Type                | Description
 --------------|-----------------------|--------------
-pinMode       | enum(student,tutor)   | which mode of pins to *return*?
+pinMode       | enum(student,tutor,mine)   | which mode of pins to *return*?
+
 
 # Profile
 
