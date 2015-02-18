@@ -247,7 +247,7 @@ pinMode       | enum(student,tutor)   | which pin should be removed?
   }
 
 # request
-/pins?pinMode=student
+/pins?pinMode=student&lat1=90&lng1=-180&lat2=-90&lng2=180
 
 # response
 {
@@ -310,11 +310,26 @@ pinMode       | enum(student,tutor)   | which pin should be removed?
 
 Get a list of pins the user is interested in.
 
+If pinMode=(student|tutor) return the student or tutor pins *not owned by the
+user* within the bounding rectangle specified by (lat1,lng1) (top-left) and
+(lat2,lng2) (bottom-right). The bounding rectangle's top edge faces north and
+right edge faces east.
+
+If pinMode=mine, return the user's pins. Lat and lng are disregarded if
+pinMode=mine.
+
+Note: for testing purposes you can use lat1=90, lng1=-180, lat2=-90, lng2=180
+to include all pins.
+
 ### Query Parameters
 
-Parameter     |   Type                | Description
---------------|-----------------------|--------------
+Parameter     |   Type                     | Description
+--------------|----------------------------|--------------
 pinMode       | enum(student,tutor,mine)   | which mode of pins to *return*?
+lat1          | float                      | latitude of *top-left* corner of bounding rectangle
+lng1          | float                      | longitude of *top-left* corner of bounding rectangle
+lat2          | float                      | latitude of *bottom-right* corner of bounding rectangle
+lng2          | float                      | longitude of *bottom-right* corner of bounding rectangle
 
 
 # Profile
