@@ -202,6 +202,9 @@ courses       | hash of uname: [course]  | (student) course: {subject, number}
 - `already_dropped` if the user already has a pin down in this mode
 - `max_duration_exceeded` if the duration is too long
 - `tutor_profile_missing` if trying to drop pin as tutor but no tutor profile
+- `invalid_image_format` an image is not an accepted format
+- `image_too_large` an image is too large
+- `too_many_images` too many images in the request
 
 ## Delete a pin
 
@@ -414,3 +417,7 @@ tutor.bio         | string                   | short bio of tutor (degrees, bla 
 tutor.rate        | float                    | how much the tutor charges per hour
 tutor.skills      | array of strings         | skills the tutor wants to tutor in
 tutor.courses     | hash of uname: [course]  | courses the tutor wants to tutor for
+
+### Failure Codes
+- `invalid_image_format` the image is not an accepted format (eg, PNG)
+- `image_too_large` the image is too large
