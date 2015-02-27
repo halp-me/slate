@@ -421,3 +421,125 @@ tutor.courses     | hash of uname: [course]  | courses the tutor wants to tutor 
 ### Failure Codes
 - `invalid_image_format` the image is not an accepted format (eg, PNG)
 - `image_too_large` the image is too large
+
+# Autofill
+Users may need to enter an enumerable type of data such as picking their
+university or selecting a subset of skills.
+
+These enumerations (universities, skills, courses) are large and dynamic.
+The following endpoints allow us to get the
+values of the respective enumeration matching some substring.
+
+**In each of the following endpoints, the substring parameters match the start
+of a word. (eg `ap` matches `apple` but does not match `grape`.**
+
+### Implementation Note
+As Emmett already foresaw, if the user starts typing something, eg "Sa", and you
+run a query to get all the universities that contain "Sa", you do not need to
+query the endpoint again when the user continues typing "San F" (you can just
+filter the list you already have). Running a query on every letter the user
+types will be very taxing on the server! You only need to run another query
+if the user deletes a character.
+
+## Universities
+
+```shell
+# request
+/enum/universities?substring=san
+
+# response
+{
+  "code": "success"
+  "results": [
+    "San Francisco State University",
+    "San Jose State University",
+    "Santa Barbara State University",
+    "UC Santa Barabara",
+    ...
+  ]
+}
+```
+
+`GET /enum/universities`
+
+Get a subset of universities that match `substring`.
+
+
+### Query Parameters
+
+Parameter     |   Type                                      | Description
+--------------|---------------------------------------------|--------------
+substring     | string (case insensitive)                   | substring that must be contained in every returned entry as the start of a word
+
+### Failure Codes
+- `substring_length` if `substring` does not contain at least one character
+
+## Courses
+
+```shell
+# request
+/enum/courses?course=c&number=3university=California Polytechnic State University
+
+# response
+{
+  "code": "success"
+  "results": [
+    {
+      "subject": "CPE",
+      "number": 308
+    },{
+      "subject": "CSC",
+      "number": 349 
+    }, {
+      ...
+    }
+  ]
+}
+```
+
+`GET /enum/courses`
+
+Get a subset of courses from `university` that match the
+`subject` and `number` parameters. At least one of `subject` and `number`
+must be provided, but both may be provided.
+
+
+Parameter            |   Type                                      | Description
+---------------------|---------------------------------------------|--------------
+subject     | string (case insensitive)                   | substring that must be contained in every returned course at the start of the subject (eg "c" matches "csc" and "cpe" but not "grc")
+number      | integer                                     | integer that must be contained in every returned course at the start of the course number (eg "4" matches "492" but not "349")
+university  | string                                      | the full university name that corresponds to the univeristy to search for classes from
+
+### Failure Codes
+- `substring_length` if between the two filters, `subject` and `number`, at least one character isn't specified
+
+## Skills
+
+```shell
+# request
+/enum/skills?substring=e
+
+# response
+{
+  "code": "success"
+  "results": [
+    "Excell",
+    "Entreprenuership",
+    ...
+  ]
+}
+```
+
+`GET /enum/skills`
+
+Get a subset of skills that match `substring`.
+
+
+### Query Parameters
+
+Parameter     |   Type                                      | Description
+--------------|---------------------------------------------|--------------
+substring     | string (case insensitive)                   | substring that must be contained in every returned entry as the start of a word
+
+### Failure Codes
+- `substring_length` if `substring` does not contain at least one character
