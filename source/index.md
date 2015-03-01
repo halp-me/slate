@@ -431,7 +431,7 @@ The following endpoints allow us to get the
 values of the respective enumeration matching some substring.
 
 **In each of the following endpoints, the substring parameters match the start
-of a word. (eg `ap` matches `apple` but does not match `grape`.**
+of a word. (eg `ap` matches `apple` and `halp api` but does not match `grape`.**
 
 ### Implementation Note
 As Emmett already foresaw, if the user starts typing something, eg "Sa", and you
@@ -450,7 +450,7 @@ if the user deletes a character.
 # response
 {
   "code": "success"
-  "results": [
+  "universities": [
     "San Francisco State University",
     "San Jose State University",
     "Santa Barbara State University",
@@ -478,12 +478,12 @@ substring     | string (case insensitive)                   | substring that mus
 
 ```shell
 # request
-/enum/courses?course=c&number=3university=California Polytechnic State University
+/enum/courses?course=c&number=3&university=California%20Polytechnic%20State%20University
 
 # response
 {
   "code": "success"
-  "results": [
+  "courses": [
     {
       "subject": "CPE",
       "number": 308
@@ -503,15 +503,15 @@ Get a subset of courses from `university` that match the
 `subject` and `number` parameters. At least one of `subject` and `number`
 must be provided, but both may be provided.
 
-
 Parameter            |   Type                                      | Description
 ---------------------|---------------------------------------------|--------------
 subject     | string (case insensitive)                   | substring that must be contained in every returned course at the start of the subject (eg "c" matches "csc" and "cpe" but not "grc")
 number      | integer                                     | integer that must be contained in every returned course at the start of the course number (eg "4" matches "492" but not "349")
-university  | string                                      | the full university name that corresponds to the univeristy to search for classes from
+university  | string                                      | the full university name that corresponds to the univeristy to search for classes from. This is the same string returned from /enum/universities
 
 ### Failure Codes
 - `substring_length` if between the two filters, `subject` and `number`, at least one character isn't specified
+- `university_length` if university isn't specified
 
 ## Skills
 
@@ -522,7 +522,7 @@ university  | string                                      | the full university 
 # response
 {
   "code": "success"
-  "results": [
+  "skills": [
     "Excell",
     "Entreprenuership",
     ...
