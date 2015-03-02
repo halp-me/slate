@@ -478,7 +478,7 @@ substring     | string (case insensitive)                   | substring that mus
 
 ```shell
 # request
-/enum/courses?course=c&number=3&university=California%20Polytechnic%20State%20University
+/enum/courses?subject=c&number=3&university=California%20Polytechnic%20State%20University
 
 # response
 {
