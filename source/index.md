@@ -500,7 +500,7 @@ substring     | string (case insensitive)                   | substring that mus
 `GET /enum/courses`
 
 Get a subset of courses from `university` that match the
-`subject` and `number` parameters. At least one of `subject` and `number`
+`subject` and/or `number` parameters. Either `subject` or `number`
 must be provided, but both may be provided.
 
 Parameter            |   Type                                      | Description
