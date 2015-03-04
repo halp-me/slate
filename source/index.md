@@ -428,33 +428,22 @@ university or selecting a subset of skills.
 
 These enumerations (universities, skills, courses) are large and dynamic.
 The following endpoints allow us to get the
-values of the respective enumeration matching some substring.
-
-**In each of the following endpoints, the substring parameters match the start
-of a word. (eg `ap` matches `apple` and `halp api` but does not match `grape`.**
-
-### Implementation Note
-As Emmett already foresaw, if the user starts typing something, eg "Sa", and you
-run a query to get all the universities that contain "Sa", you do not need to
-query the endpoint again when the user continues typing "San F" (you can just
-filter the list you already have). Running a query on every letter the user
-types will be very taxing on the server! You only need to run another query
-if the user deletes a character.
+values of the respective enumeration.
 
 ## Universities
 
 ```shell
 # request
-/enum/universities?substring=san
+/enum/universities
 
 # response
 {
   "code": "success"
   "universities": [
     "San Francisco State University",
-    "San Jose State University",
+    "UC Irvine",
     "Santa Barbara State University",
-    "UC Santa Barabara",
+    "Cal Poly",
     ...
   ]
 }
@@ -462,23 +451,13 @@ if the user deletes a character.
 
 `GET /enum/universities`
 
-Get a subset of universities that match `substring`.
-
-
-### Query Parameters
-
-Parameter     |   Type                                      | Description
---------------|---------------------------------------------|--------------
-substring     | string (case insensitive)                   | substring that must be contained in every returned entry as the start of a word
-
-### Failure Codes
-- `substring_length` if `substring` does not contain at least one character
+Get a list of all universities.
 
 ## Courses
 
 ```shell
 # request
-/enum/courses?subject=c&number=3&university=California%20Polytechnic%20State%20University
+/enum/courses?university=California%20Polytechnic%20State%20University
 
 # response
 {
@@ -499,25 +478,20 @@ substring     | string (case insensitive)                   | substring that mus
 
 `GET /enum/courses`
 
-Get a subset of courses from `university` that match the
-`subject` and/or `number` parameters. Either `subject` or `number`
-must be provided, but both may be provided.
+Get a list of all courses from `university`.
 
 Parameter            |   Type                                      | Description
 ---------------------|---------------------------------------------|--------------
-subject     | string (case insensitive)                   | substring that must be contained in every returned course at the start of the subject (eg "c" matches "csc" and "cpe" but not "grc")
-number      | integer                                     | integer that must be contained in every returned course at the start of the course number (eg "4" matches "492" but not "349")
 university  | string                                      | the full university name that corresponds to the univeristy to search for classes from. This is the same string returned from /enum/universities
 
 ### Failure Codes
-- `substring_length` if between the two filters, `subject` and `number`, at least one character isn't specified
 - `university_length` if university isn't specified
 
 ## Skills
 
 ```shell
 # request
-/enum/skills?substring=e
+/enum/skills
 
 # response
 {
@@ -525,6 +499,8 @@ university  | string                                      | the full university 
   "skills": [
     "Excell",
     "Entreprenuership",
+    "Photoshop",
+    "Cooking"
     ...
   ]
 }
@@ -532,14 +508,4 @@ university  | string                                      | the full university 
 
 `GET /enum/skills`
 
-Get a subset of skills that match `substring`.
-
-
-### Query Parameters
-
-Parameter     |   Type                                      | Description
---------------|---------------------------------------------|--------------
-substring     | string (case insensitive)                   | substring that must be contained in every returned entry as the start of a word
-
-### Failure Codes
-- `substring_length` if `substring` does not contain at least one character
+Get a list of all the existing skills.
