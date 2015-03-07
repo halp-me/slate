@@ -67,13 +67,17 @@ In the sections below, unauthorized endpoints are marked by the term
 {
   "type": "halp",
   "email": "test@halp.me",
-  "passwordHash": "5f4dcc3b5aa765d61d8327deb882cf99"
+  "passwordHash": "5f4dcc3b5aa765d61d8327deb882cf99",
+  "pushType": "gcm",
+  "pushToken": "<gcm registrationId>"
 }
 
 # facebook
 {
   "type": "facebook",
-  "accessToken": "CAAIMxih9KD0BACKy9y2mhOqwvA8zIsQ2kZBB1zctvlZCZCSZBUhPLODmPltwRbmQvxcwzDNuQaZCZAZB7Gy1udLx8XN6ZB4nUk75ZCq5D0K0MEXZBZBNUDj7xVLxfVyfSjUq2kAuCMypPQeazmWJdagFjS3z2lPKHdABaQ3By8RXzfqZBu2x8Pta9ZBq5aqZBqCZAog9WCAQaksXjVweEEGYYNbwnZBr"
+  "accessToken": "CAAIMxih9KD0BACKy9y2mhOqwvA8zIsQ2kZBB1zctvlZCZCSZBUhPLODmPltwRbmQvxcwzDNuQaZCZAZB7Gy1udLx8XN6ZB4nUk75ZCq5D0K0MEXZBZBNUDj7xVLxfVyfSjUq2kAuCMypPQeazmWJdagFjS3z2lPKHdABaQ3By8RXzfqZBu2x8Pta9ZBq5aqZBqCZAog9WCAQaksXjVweEEGYYNbwnZBr",
+  "pushType": "apn",
+  "pushToken": "<apn deviceToken>"
 }
 
 # response
@@ -98,6 +102,8 @@ type          | enum(halp, facebook)  |
 email         | string                | (halp) user's email
 passwordHash  | string                | (halp) md5 hash of user's password
 accessToken   | string                | (facebook) user's facebook access token
+pushType      | enum(apn, gcm)        | (optional) the push notification service to use
+pushToken     | string                | (required if pushType set) the deviceToken (apn) or registrationId (gcm) to use to push notifications to this device
 
 ### Failure Codes
 - `invalid_credentials`
@@ -112,7 +118,9 @@ accessToken   | string                | (facebook) user's facebook access token
   "email": "test@halp.me",
   "passwordHash": "5f4dcc3b5aa765d61d8327deb882cf99",
   "firstname": "Test",
-  "lastname": "User"
+  "lastname": "User",
+  "pushType": "apn",
+  "pushToken": "<apn deviceToken>"
 }
 
 # response
@@ -137,6 +145,8 @@ email         | string                | user's email
 passwordHash  | string                | md5 hash of user's password
 firstname     | string                | user's firstname
 lastname      | string                | user's lastname
+pushType      | enum(apn, gcm)        | (optional) the push notification service to use
+pushToken     | string                | (required if pushType set) the deviceToken (apn) or registrationId (gcm) to use to push notifications to this device
 
 ### Failure Codes
 - `email_taken`
