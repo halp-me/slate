@@ -509,3 +509,51 @@ university  | string                                      | the full university 
 `GET /enum/skills`
 
 Get a list of all the existing skills.
+
+# Push Notifications
+
+```shell
+# payload
+{
+  "studentUnreadMessages": 1
+  "tutorUnreadMessages": 3
+  "studentNewMatches": 0
+  "tutorNewMatches": 1
+  # android only
+  "message": "You have 1 new match and 4 unread messages."
+}
+```
+
+### Send To Sync
+The apps will only ever have one
+push notification awaiting them at a time. This push notification does not
+contain new content, rather it tells the app that there is new content;
+the app should sync with the server to obtain the new content.
+
+### Payload
+The payload of the push notification is shown to the right. When the
+application is brought to the foreground or receives the push notification
+while it is in the foreground, the application should display these
+notifications appropriately around the app
+(eg: if in student mode, display studentUnreadMessages next to the inbox).
+
+## Android
+In android the application handles how the system displays push notifications.
+The app should display `<studentUnreadMessages> + <tutorUnreadMessages> +
+<studentNewMatches> + <tutorNewMatches>` as the badge count of the application.
+Additionally, it should display `message` in the system tray.
+
+Note: there is an edge case where someone drops a pin then deletes a pin
+before the user opens the app. In this case, when the pin is deleted,
+a push notification will be sent with `0` as all counts and `''` as the
+message. The application should delete the system notification and remove the
+application badge count.
+
+## iOS
+In iOS the operating system handles displaying the push notifications.
+
+## Badge Count
+Some time before being backgrounded, the apps should update the badge count
+appropriately.
+[ios](http://stackoverflow.com/questions/14038680/how-to-clear-push-notification-badge-count-in-ios)
+[android](http://stackoverflow.com/questions/20136483/how-do-you-interface-with-badgeprovider-on-samsung-phones-to-add-a-count-to-the/20136484#20136484)
