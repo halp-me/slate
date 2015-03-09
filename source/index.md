@@ -520,6 +520,128 @@ university  | string                                      | the full university 
 
 Get a list of all the existing skills.
 
+# Messaging
+
+## Posting a New Message
+
+```shell
+# request
+{
+  "recipient": 4089,
+  "body": "Do you make good pancakes?",
+  "senderMode": "student"
+}
+
+# response
+{
+  "code": "success"
+}
+```
+
+`POST /message`
+
+Send a message to a user.
+
+### Body Parameters
+
+Parameter     |   Type      | Description
+--------------|-------------|--------
+recipient     | int         | the userId of the user to send the message to
+body          | string      | the text body of the message
+senderMode    | string      | The mode of the user sending the mesage (the mode the app is currently in)
+
+### Failure Codes
+- `recipient_not_available` the recipient does not have a pin down in the opposite mode of `senderMode` (eg if `senderMode=student` and this error code is received, then the recipient does not have a `tutor` pin down)
+- `body_length` the body does not contain at least one character
+- `tutor_profile_missing` the user tried to send a message as a tutor without a tutor profile filled out
+
+## Receiving Messages
+
+```shell
+# request
+GET /messages?afterMessageId=994
+
+# response
+{
+  "code": "success",
+  "messages": [
+    {
+      "sender": {
+        "userId": 9582,
+        "firstname": "James"
+      },
+      "receiveMode": "student"
+      "id": 1028,
+      "timestamp": 1425841182,
+      "read": false,
+      "body": "Where do you want to meet?"
+    }, {
+      "sender": {
+        "userId": 7717,
+        "firstname": "Maria"
+      },
+      "receiveMode": "student"
+      "id": 1031,
+      "timestamp": 1425841220,
+      "read": false,
+      "body": "Yes I can help you with kinematics."
+    },{
+    ...
+    }
+  ]
+}
+```
+
+`GET /messages`
+
+Get all messages occuring after `afterMessageId`. The app should send the
+id of the message with the greatest message id it has received.
+
+### Query Parameters
+
+Parameter      |   Type   | Description
+---------------|----------|--------------
+afterMessageId | int      | the greatest message `id` in the inbox
+
+## Marking Messages as Read
+
+```shell
+# request
+{
+  "messageId": 1031
+}
+
+# response
+{
+  "code": "success"
+}
+```
+
+`PUT /readMessage`
+
+Mark all messages to the current user from the author of `messageId` as read
+up to (and including) `messageId`.
+
+Say the current user is viewing his messages with Albert. The messages
+include message ids (410, 417, 418, 422, 590, 599, and 674). By sending a
+`PUT /readMessage` with `messageId=674`, messages 410, 417, 418, 422, 590, 599,
+and 674 are marked as `read` on the server.
+
+The apps should send `PUT /readMessage` any time the user opens a conversation
+with a user that has at least one unread message.
+
+### Body Parameters
+
+Parameter     |   Type      | Description
+--------------|-------------|--------
+messageId     | int         | id of the last message in the current conversation
+
+<aside class="notice">
+Reading messages across multiple devices with the same user is currently broken
+in terms of displaying messages as read on the "other" devices the user is
+currently logged into.
+</aside>
+
 # Push Notifications
 
 ```shell
