@@ -597,11 +597,14 @@ GET /messages?afterMessageId=994
 Get all messages occuring after `afterMessageId`. The app should send the
 id of the message with the greatest message id it has received.
 
+If `afterMessageId` is omitted or set to 0, this endpoint returns all messages
+for the logged in user.
+
 ### Query Parameters
 
 Parameter      |   Type   | Description
 ---------------|----------|--------------
-afterMessageId | int      | the greatest message `id` in the inbox
+afterMessageId | int      | (optional) the greatest message `id` in the inbox
 
 ## Marking Messages as Read
 
