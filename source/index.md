@@ -566,8 +566,10 @@ GET /conversations?mode=tutor
   "code": "success",
   "conversations": [
     {
-      "userId": 9582,
-      "firstname": "James",
+      "otherUser": {
+        "userId": 9582,
+        "firstname": "James",
+      },
       "unreadMessages": 1,
       "lastMessage": {
         "me": false,
@@ -575,8 +577,10 @@ GET /conversations?mode=tutor
         "body": "Sweet, lets meet."
       }
     },{
-      "userId": 4470,
-      "firstname": "Fernando",
+      "otherUser": {
+        "userId": 4470,
+        "firstname": "Fernando",
+      },
       "unreadMessages": 0,
       "lastMessage": {
         "me": true,
