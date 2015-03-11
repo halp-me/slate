@@ -559,7 +559,7 @@ senderMode    | string      | The mode of the user sending the mesage (the mode 
 
 ```shell
 # request
-GET /conversations?mode=student
+GET /conversations?mode=tutor
 
 # response
 {
@@ -568,13 +568,21 @@ GET /conversations?mode=student
     {
       "userId": 9582,
       "firstname": "James",
-      "unreadMessages": 3,
-      "timestamp": 1425841871
+      "unreadMessages": 1,
+      "lastMessage": {
+        "me": false,
+        "timestamp": 1425841225,
+        "body": "Sweet, lets meet."
+      }
     },{
       "userId": 4470,
       "firstname": "Fernando",
       "unreadMessages": 0,
-      "timestamp": 1425841400
+      "lastMessage": {
+        "me": true,
+        "timestamp": 1425841118,
+        "body": "later"
+      }
     },{
       ...
     }
@@ -586,8 +594,8 @@ GET /conversations?mode=student
 
 Get a list of all conversations in the current user-mode.
 
-Conversations are sorted by timestamp such that the newest conversation has
-the lowest index.
+Conversations are sorted by timestamp such that the conversation 
+with the most recent message has the lowest index.
 
 The app should query this endpoint whenever it displays the inbox,
 returns to the inbox via back button, or receives a push notification
@@ -597,13 +605,13 @@ while at the inbox (messages may have been read on another device).
 
 Parameter      |   Type                    | Description
 ---------------|---------------------------|--------------
-mode           | enum('student', 'tutor')  | The mode the user is in
+mode           | enum('student', 'tutor')  | The mode the current user is in
 
-## Get a list of conversations
+## Get a conversation's messages
 
 ```shell
 # request
-GET /messages?mode=student&otherUserId=9582
+GET /messages?mode=tutor&otherUserId=9582
 
 # response
 {
@@ -614,14 +622,14 @@ GET /messages?mode=student&otherUserId=9582
   },
   "messages": [
     {
+      "me": false,
+      "timestamp": 1425841225,
+      "body": "Sweet, lets meet."
+    },{
+    },{
       "me": true,
       "timestamp": 1425841220,
       "body": "Yes I can help you with kinematics."
-    },{
-      "me": false,
-      "timestamp": 1425841221,
-      "body": "Sweet, lets meet."
-    },{
       ...
     }
   ]
@@ -644,7 +652,7 @@ receives a push notification while displaying a conversation.
 
 Parameter      |   Type                    | Description
 ---------------|---------------------------|--------------
-mode           | enum('student', 'tutor')  | The mode the user is in
+mode           | enum('student', 'tutor')  | The mode the current user is in
 otherUserId    | int                       | The userId of the other user in the conversation
 
 # Push Notifications
