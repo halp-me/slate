@@ -551,7 +551,6 @@ body          | string      | the text body of the message
 senderMode    | string      | The mode of the user sending the mesage (the mode the app is currently in)
 
 ### Failure Codes
-- `recipient_not_available` the recipient does not have a pin down in the opposite mode of `senderMode` (eg if `senderMode=student` and this error code is received, then the recipient does not have a `tutor` pin down)
 - `body_length` the body does not contain at least one character
 - `tutor_profile_missing` the user tried to send a message as a tutor without a tutor profile filled out
 
