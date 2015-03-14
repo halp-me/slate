@@ -648,6 +648,9 @@ a student).
 Messages are sorted by timestamp such that the newest message has
 the lowest index.
 
+When this endpoint is queried, the messages in this conversation are marked
+as read.
+
 The app should query this endpoint whenever it displays a conversation or
 receives a push notification while displaying a conversation.
 
