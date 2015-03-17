@@ -279,6 +279,7 @@ pinMode       | enum(student,tutor)   | which pin should be removed?
         "rate": 23.00
       # end pinMode=tutor only
       },
+      "dropTime": 391273011,
       "endTime": 391273813, # seconds since epoch
       "latitude": 192.9393,
       "longitude": -44.5821,
@@ -344,6 +345,48 @@ lng1          | float                      | longitude of *top-left* corner of b
 lat2          | float                      | latitude of *bottom-right* corner of bounding rectangle
 lng2          | float                      | longitude of *bottom-right* corner of bounding rectangle
 
+# Matches
+
+## Get a list of matches
+
+```shell
+#request
+/matches?mode=student
+
+#response
+{
+  "code": "success",
+  "matches": [
+    {
+      # same exact fields as a pin with one additional field:
+      # ...
+      "new" : true
+    },
+    {
+      # ...
+      "new" : false
+    }
+  ]
+}
+
+```
+
+`GET /matches`
+
+Get a list of matches that this user has.
+
+Currently a match is defined as follows: a pin in the opposite mode of the
+user's pin which matches on at least one course. Recall that courses
+are university specific. EG: CPE 101 from AHC != CPE 101 from CP.
+
+Note: matches returned from this endpoint are marked as `new=false` upon
+querying this endpoint.
+
+### Query Parameters
+
+Parameter     |   Type                     | Description
+--------------|----------------------------|--------------
+mode          | enum(student,tutor)        | the mode the current user is in
 
 # Profile
 
