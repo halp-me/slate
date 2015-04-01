@@ -709,10 +709,16 @@ otherUserId    | int                       | The userId of the other user in the
 ```shell
 # payload
 {
-  "studentUnreadMessages": 1
-  "tutorUnreadMessages": 3
-  "studentNewMatches": 0
-  "tutorNewMatches": 1
+  "studentUnreadMessages": 1,
+  "tutorUnreadMessages": 3,
+  "studentNewMatches": 0,
+  "tutorNewMatches": 1,
+  "session": { # or null if no active session
+    "otherUserId": 4089,
+    "mode": "tutor",
+    "startTimestamp": 39384880,
+    "rate": 40.55
+  },
   # android only
   "message": "You have 1 new match and 4 unread messages."
 }
@@ -751,3 +757,145 @@ Some time before being backgrounded, the apps should update the badge count
 appropriately.
 [ios](http://stackoverflow.com/questions/14038680/how-to-clear-push-notification-badge-count-in-ios)
 [android](http://stackoverflow.com/questions/20136483/how-do-you-interface-with-badgeprovider-on-samsung-phones-to-add-a-count-to-the/20136484#20136484)
+
+# Sessions
+See the
+[sessions doc](https://docs.google.com/document/d/1KII44ezoqBc7rvzaenCXI4E34zfhemRTo-vFQn4NihQ/edit)
+for an overview on how sessions work. This section requires knowledge of the
+session flow.
+
+## Start Session
+
+```shell
+# request (first user)
+{
+  "mode": "student",
+  "otherUserId": 4089
+}
+
+# response
+{
+  "code": "success",
+  "complete": false,
+  "pollDuration": 2000,
+  "pollInterval": 250
+}
+
+# request (second user)
+{
+  "mode": "tutor",
+  "otherUserId": 5127 
+}
+
+# response
+{
+  "code": "success",
+  "complete": true,
+  "startTimestamp": 39384880,
+  "rate": 40.55
+}
+```
+
+`POST /session/start`
+
+This endpoint is how the user sticks out his hand to either initiate or
+reciprocate the handshake. It is called every time the user presses the
+"Start Session" button.
+
+If this user is initializing the handshake, `complete` will be `false`, and the
+user should poll `/session/started` for `pollDuration` milliseconds every
+`pollInterval` milliseconds (see below). `pollDuration` and `pollInterval` shall
+be respected so we can tweak these values in the production environment without
+re-shipping-out our client apps.
+
+If this user is reciprocating the handshake within the time alloted, `complete`
+will be `true`, and the app *should not poll for confirmation*. The session has
+successfully started. `startTimestamp` is the timestamp that the server has
+recorded for session start. `rate` is the rate per hour for the session.
+
+### Body Parameters
+
+Parameter     |   Type      | Description
+--------------|-------------|--------
+mode          | string      | the mode of *this* user who is pressing the button
+otherUserId   | int         | the userId of the user to handshake with (who this user is trying to begin a session with)
+
+## Session Start Confirmation
+
+```shell
+# request
+GET /session/started?mode=tutor&otherUserId=4089
+
+# response (not started)
+{
+  "code": "success",
+  "complete": false
+}
+
+# response (started)
+{
+  "code": "success",
+  "complete": true,
+  "startTimestamp": 39384880,
+  "rate": 40.55
+}
+```
+
+`GET /session/started`
+
+Determine whether a session with the specified user has started.
+
+`complete` is false if the session hasn't started, and is true if the session
+has started.
+
+### Query Parameters
+
+Parameter     |   Type      | Description
+--------------|-------------|--------
+mode          | string      | the mode of *this* user who is pressing the button
+otherUserId   | int         | the userId of the user to handshake with (who this user is trying to begin a session with)
+
+## End Session
+```shell
+# request
+{
+  "duration": 60
+}
+# response
+{
+  "success": true
+}
+```
+
+`POST /session/end`
+
+End the session. This action can only be done once. It releases both users
+from the session and performs payment.
+
+### Body Parameters
+
+Parameter     |   Type      | Description
+--------------|-------------|--------
+duration      | int         | the duration (in seconds) of the session
+
+### Failure Codes
+- `duration_too_long` if the duration is longer than `now - sessionStart`
+- `no session` if the user is not in a session
+
+## Session End Confirmation
+```shell
+# request
+GET /session/ended
+
+# response
+{
+  "success": true,
+  "ended": false
+}
+```
+`GET /session/ended`
+
+Determine whether the user is in a session. The server will send both users
+a push notification when the session has ended, but this endpoint should be
+queried every minute or so while the user is in the session just in case
+the push doesn't go through.
