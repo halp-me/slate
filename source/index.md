@@ -758,6 +758,25 @@ appropriately.
 [ios](http://stackoverflow.com/questions/14038680/how-to-clear-push-notification-badge-count-in-ios)
 [android](http://stackoverflow.com/questions/20136483/how-do-you-interface-with-badgeprovider-on-samsung-phones-to-add-a-count-to-the/20136484#20136484)
 
+## Pulling for a Notification
+
+```shell
+# request
+GET /notification
+
+# response
+{
+  "code": "success",
+  "notification": {
+    # same object as above
+  }
+}
+```
+
+`GET /notification`
+
+Get an up-to-date notification object.
+
 # Sessions
 See the
 [sessions doc](https://docs.google.com/document/d/1KII44ezoqBc7rvzaenCXI4E34zfhemRTo-vFQn4NihQ/edit)
