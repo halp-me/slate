@@ -839,6 +839,10 @@ Parameter     |   Type      | Description
 mode          | string      | the mode of *this* user who is pressing the button
 otherUserId   | int         | the userId of the user to handshake with (who this user is trying to begin a session with)
 
+### Failure Codes
+- `missing_pins` the student or tutor (or both) don't have pins down
+
+
 ## Session Start Confirmation
 
 ```shell
