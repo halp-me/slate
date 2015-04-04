@@ -903,7 +903,8 @@ duration      | int         | the duration (in seconds) of the session
 
 ### Failure Codes
 - `duration_too_long` if the duration is longer than `now - sessionStart`
-- `no session` if the user is not in a session
+- `invalid_duration` if duration is NaN or < 0
+- `no_session` if the user is not in a session
 
 ## Session End Confirmation
 ```shell
