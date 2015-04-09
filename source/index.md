@@ -783,6 +783,10 @@ See the
 for an overview on how sessions work. This section requires knowledge of the
 session flow.
 
+Note: only a few endpoints are operable while a user is in a session. Endpoints
+that are inoperable while a user is in a session respond with
+code=`active_session` if the user is in a session.
+
 ## Start Session
 
 ```shell
