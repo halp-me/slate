@@ -890,7 +890,7 @@ otherUserId   | int         | the userId of the user to handshake with (who this
 }
 # response
 {
-  "success": true
+  "code": "success"
 }
 ```
 
@@ -909,6 +909,53 @@ duration      | int         | the duration (in seconds) of the session
 - `duration_too_long` if the duration is longer than `now - sessionStart`
 - `invalid_duration` if duration is NaN or < 0
 - `no_session` if the user is not in a session
+
+## Rate other user after session
+```shell
+# request
+# a student rates his last tutor
+{
+  "ratings": {
+    # 0 to 5, integers only.
+    "friendliness": 4,
+    "knowledge": 3
+
+  }
+}
+# response
+{
+  "success": true
+}
+
+# request
+# a tutor rates his last student
+{
+  "ratings": {
+    # 1 for thumbs up, -1 for thumbs down
+    "approval": 1
+  }
+}
+# response
+{
+  "success": true
+}
+```
+
+`POST /session/rate`
+
+Rate the last session this user had.
+
+### Body Parameters
+Parameter     |   Type               | Description
+--------------|----------------------|------------
+ratings       | object               | this user's ratings of the other user
+
+### Failure Codes
+- `no_session` the user has no previous sessions
+- `already_rated` the user is trying to rate a session he's already rated
+- `expired` the user waited too long to rate the other user.
+- `missing_fields` a required `ratings` field is missing. See the example to the
+   right. An in-rage integer must be supplied for each field.
 
 ## Session End Confirmation
 ```shell
