@@ -162,6 +162,7 @@ pushToken     | string                | (required if pushType set) the deviceTok
   "latitude": 47.2232931,
   "longitude": -162.9434883,
   "duration": 3600,
+  "dropTimestamp": 40493838293,
 # pinMode=student only
   "description": "Paying someone to do my homework for me.",
   "skills": ["archery", "snorkeling", "knitting"],
@@ -279,7 +280,7 @@ pinMode       | enum(student,tutor)   | which pin should be removed?
         "rate": 23.00
       # end pinMode=tutor only
       },
-      "dropTime": 391273011,
+      "dropTimestamp": 391273011,
       "endTime": 391273813, # seconds since epoch
       "latitude": 192.9393,
       "longitude": -44.5821,
