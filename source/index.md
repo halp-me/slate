@@ -121,6 +121,7 @@ pushToken     | string                | (required if pushType set) the deviceTok
   "lastname": "User",
   "pushType": "apn",
   "pushToken": "<apn deviceToken>"
+  "image": "..."
 }
 
 # response
@@ -147,9 +148,12 @@ firstname     | string                | user's firstname
 lastname      | string                | user's lastname
 pushType      | enum(apn, gcm)        | (optional) the push notification service to use
 pushToken     | string                | (required if pushType set) the deviceToken (apn) or registrationId (gcm) to use to push notifications to this device
+image         | string                | (optional) base64 encoded jpeg or png profile image
 
 ### Failure Codes
 - `email_taken`
+- `image_too_large` an image is too large
+- `invalid_image_format` an image is not an accepted format
 
 # Pins
 
