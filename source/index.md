@@ -242,6 +242,32 @@ pinMode       | enum(student,tutor)   | which pin should be removed?
 ### Failure Codes
 - `no_pin` the user doesn't have a pin to remove
 
+## Get a Pin
+
+```shell
+# request
+/pin?userId=17&pinMode=student
+
+#response
+{
+  "code": "success"
+  "pin": {
+    # same type of pin object returned by GET /Pins
+    # or null if user has no pin in this mode down
+  }
+}
+```
+
+`GET /pin`
+
+Get `userId`'s `pinMode` pin. (eg get user#17's student pin).
+
+### Query Parameters
+Parameter     |   Type                   | Description
+--------------|--------------------------|--------
+pinMode       | enum(student,tutor)      | which type of pin should be returned?
+userId        | int                      | the user id whose pin it is to obtain 
+
 ## Get a list of pins
 
 ```shell
