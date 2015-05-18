@@ -1005,3 +1005,23 @@ Determine whether the user is in a session. The server will send both users
 a push notification when the session has ended, but this endpoint should be
 queried every minute or so while the user is in the session just in case
 the push doesn't go through.
+
+# Payments
+
+## Get client token
+
+```shell
+# request
+GET /payments/clientToken
+
+# response
+{
+  "code": "success",
+  "clientToken": <the token>
+}
+```
+
+`GET /payments/clientToken`
+
+Get a braintree client token to be used with payment functionality (eg
+accessing the braintree client-side SDK).
