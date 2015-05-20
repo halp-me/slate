@@ -1025,3 +1025,30 @@ GET /payments/clientToken
 
 Get a braintree client token to be used with payment functionality (eg
 accessing the braintree client-side SDK).
+
+## Create payment method
+```shell
+# request
+{
+  "nonce": "the nonce for the payment method"
+}
+
+# response
+{
+  "code": "success",
+}
+```
+
+`POST /payments/paymentMethod`
+
+Create a braintree payment method to be used later on for payments.
+
+### Body Parameters
+
+Parameter     |   Type                | Description
+--------------|-----------------------|--------
+nonce         | string                | payment method nonce created using braintree client sdk
+
+### Failure Codes
+- `nonce_consumed` - braintree says the nonce has already been used
+- `unknown_failure` - the callout to braintree failed; not sure why (unhandled)
