@@ -473,6 +473,46 @@ Get information about the currently logged in user.
 {
   "code": "success"
 }
+
+#request (create tutor profile)
+{
+  "tutor":
+    "rate": 99.80,
+    "bio": "I like cheese.",
+    "skills": ["basketball", "archery"],
+    "courses": {
+      "Cal Poly": [
+        {
+          "subject": "CPE",
+          "number": 357
+        },{
+          "subject": "CSC",
+          "number": 101
+        }
+      ],
+    }
+    "merchant": {
+      "phone": "5553334444",
+      "dateOfBirth": "1988-11-19",
+      "ssn": "5993",
+      "address": {
+        "streetAddress": "111 Main St",
+        "locality": "Chicago",
+        "region": "IL",
+        "postalCode": "60622",
+      }
+    },
+    "funding": {
+      "destination": "bank",
+      "accountNumber": "1123581321",
+      "routingNumber": "071101307",
+    },
+}
+
+#response
+{
+  "code": "success"
+}
 ```
 
 `PUT /profile`
@@ -489,6 +529,11 @@ To **create** a tutor profile, simply supply the tutor object with
 *all fields*. Creation of the tutor object is the only time where
 all fields of the tutor object must be present.
 
+<aside class="notice">
+Providing tutor.merchant and tutor.funding can only be done on tutor-profile
+creation (for now).
+</aside>
+
 ### Body Parameters
 
 Parameter     |   Type                   | Description
@@ -501,10 +546,13 @@ tutor.bio         | string                   | short bio of tutor (degrees, bla 
 tutor.rate        | float                    | how much the tutor charges per hour
 tutor.skills      | array of strings         | skills the tutor wants to tutor in
 tutor.courses     | hash of uname: [course]  | courses the tutor wants to tutor for
+tutor.merchant      | object  | (cannot update) see braintree documentation for [individual](https://developers.braintreepayments.com/ios+node/reference/request/merchant-account/create#individual)
+tutor.funding       | object  | (cannote update) see braintree documentation for [funding](https://developers.braintreepayments.com/ios+node/reference/request/merchant-account/create#funding)
 
 ### Failure Codes
 - `invalid_image_format` the image is not an accepted format (eg, PNG)
 - `image_too_large` the image is too large
+- `missing_fields` creating the tutor profile requires all fields to be present
 
 # Autofill
 Users may need to enter an enumerable type of data such as picking their
