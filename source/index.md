@@ -492,6 +492,7 @@ Get information about the currently logged in user.
       ],
     }
     "merchant": {
+      "email": "josh@halp.me",
       "phone": "5553334444",
       "dateOfBirth": "1988-11-19",
       "ssn": "5993",
