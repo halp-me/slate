@@ -1101,3 +1101,73 @@ nonce         | string                | payment method nonce created using brain
 ### Failure Codes
 - `nonce_consumed` - braintree says the nonce has already been used
 - `unknown_failure` - the callout to braintree failed; not sure why (unhandled)
+
+## Get Customer
+```shell
+# request
+GET /payments/customer
+
+# response
+{
+  "code": "success",
+  "customer": {
+    "paymentMethods": [
+      {
+        "type": "CreditCard",
+        "default": true,
+        "imageUrl": "url to braintree payment method image",
+        # the remaining fields are different per payment method type
+        "cardType": "Visa",
+        "expirationMonth": "12",
+        "expirationYear": "2020",
+        "expired": false,
+        "last4": "1881",
+        "debit": "Unknown",
+        "cardholderName": null,
+      },{
+        ...
+      }
+    ]
+  }
+}
+```
+
+`GET /payments/customer`
+
+Get information about the braintree customer.
+
+The only thing returned currently for a customer is an array of paymentMethods.
+A payment method is a javascript hash with a subset of fields found in a
+[braintree payment method](https://developers.braintreepayments.com/android+node/reference/response/payment-method). The payment method hash has an additional field, `type`,
+which indicates the type of payment method it is.
+
+A payment method type can be one of the following. Each payment method type
+includes a subset of additional fields which can be accessed on the payment
+method.
+
+CreditCard                                                     
+
+- cardType
+- expirationMonth
+- expirationYear
+- expired
+- last4
+- debit
+- cardholderName
+
+ApplePayCard
+
+- cardType
+- expirationMonth
+- expirationYear
+- expired
+- last4
+
+PayPal
+
+- email
+
+EuropeBankAccount
+
+- accountHolderName
+- maskedIban
