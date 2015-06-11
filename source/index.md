@@ -1116,6 +1116,7 @@ GET /payments/customer
         "type": "CreditCard",
         "default": true,
         "imageUrl": "url to braintree payment method image",
+        "token": "braintree payment method token",
         # the remaining fields are different per payment method type
         "cardType": "Visa",
         "expirationMonth": "12",
@@ -1123,7 +1124,7 @@ GET /payments/customer
         "expired": false,
         "last4": "1881",
         "debit": "Unknown",
-        "cardholderName": null,
+        "cardholderName": null
       },{
         ...
       }
