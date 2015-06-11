@@ -1084,7 +1084,7 @@ accessing the braintree client-side SDK).
 
 # response
 {
-  "code": "success",
+  "code": "success"
 }
 ```
 
@@ -1101,6 +1101,30 @@ nonce         | string                | payment method nonce created using brain
 ### Failure Codes
 - `nonce_consumed` - braintree says the nonce has already been used
 - `unknown_failure` - the callout to braintree failed; not sure why (unhandled)
+
+## Delete payment method
+```shell
+# request
+`DELETE /payments/paymentMethod?token=8j4td2`
+
+# response
+{
+  "code": "success"
+}
+```
+
+`DELETE /payments/paymentMethod`
+
+Delete a braintree payment method currently registered for this customer.
+
+### Body Parameters
+
+Parameter     |   Type                | Description
+--------------|-----------------------|--------
+token         | string                | identifier for payment method; returned from GET /payments/customer
+
+### Failure Codes
+- `invalid_token` - braintree says this token isn't valid
 
 ## Get Customer
 ```shell
